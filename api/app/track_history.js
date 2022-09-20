@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
+const Track = require("../models/Track");
 const Track_history = require("../models/TrackHistory");
 
 const router = express.Router();
@@ -21,6 +22,13 @@ router.post('/', async (req, res) => {
 
     if (!track) {
         return res.status(400).send({error: 'Data not valid'});
+    }
+
+    const hasTrack = await Track
+        .findById(track);
+
+    if (!hasTrack) {
+        res.status(404).send({message: 'Track not found!'});
     }
 
     const trackHistoryData = {
