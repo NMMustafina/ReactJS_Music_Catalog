@@ -18,7 +18,7 @@ const ArtistItem = ({id, title, year, image}) => {
                     <CardActionArea component={Link} to={'/tracks/' + id} sx={{height: '100%'}}>
                         <CardMedia
                             component="img"
-                            height="250"
+                            height="345"
                             image={cardImage}
                             alt={title}
                         />
