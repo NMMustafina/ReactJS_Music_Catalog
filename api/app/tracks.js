@@ -12,6 +12,7 @@ router.get('/', async (req, res) => {
             query.album = req.query.album;
             tracks = await Track
                 .find(query)
+                .sort({"number": 1})
                 .populate({
                     path: 'album',
                     select: 'title',
@@ -33,13 +34,14 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const {title, album, length} = req.body;
+    const {number, title, album, length} = req.body;
 
-    if (!title || !album || !length) {
+    if (!number || !title || !album || !length) {
         return res.status(400).send({error: 'Data not valid'});
     }
 
     const trackData = {
+        number,
         title,
         album,
         length

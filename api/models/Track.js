@@ -3,6 +3,10 @@ const idValidator = require('mongoose-id-validator');
 const Schema = mongoose.Schema;
 
 const TrackSchema = new Schema({
+    number: {
+        type: Number,
+        required: true,
+    },
     title: {
         type: String,
         required: true
