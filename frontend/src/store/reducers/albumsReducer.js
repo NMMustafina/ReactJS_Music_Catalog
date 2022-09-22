@@ -5,6 +5,7 @@ import {
 } from "../actions/albumsActions";
 
 const initialState = {
+    artist: "",
     albums: [],
     loading: false,
     error: null,
@@ -15,7 +16,13 @@ const albumsReducer = (state = initialState, action) => {
         case FETCH_ALBUMS_REQUEST:
             return {...state, loading: true, error: null};
         case FETCH_ALBUMS_SUCCESS:
-            return {...state, loading: false, error: null, albums: action.payload};
+            return {
+                ...state,
+                artist: action.payload.artist,
+                albums: action.payload.albums,
+                loading: false,
+                error: null
+            };
         case FETCH_ALBUMS_FAILURE:
             return {...state, loading: false, error: action.payload};
         default:

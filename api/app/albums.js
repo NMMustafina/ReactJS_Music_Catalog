@@ -2,9 +2,9 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const {nanoid} = require('nanoid');
-
 const config = require('../config');
 const Album = require("../models/Album");
+const Artist = require("../models/Artist");
 
 const router = express.Router();
 
@@ -27,10 +27,16 @@ router.get('/', async (req, res) => {
     }
 
     try {
-        const albums = await Album
+        let albumsData = await Album
             .find(query)
-            .sort({"year":1})
-            .populate('artist', 'name');
+            .sort({"year": 1})
+
+        const artist = await Artist.findOne({_id: req.query.artist}, "name");
+
+        const albums = {
+            artist: artist.name,
+            albums: albumsData
+        };
 
         res.send(albums);
     } catch {

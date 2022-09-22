@@ -18,7 +18,7 @@ export const fetchAlbums = (id) => {
             if (response.data) {
                 dispatch(fetchAlbumsSuccess(response.data));
             } else {
-                dispatch(fetchAlbumsSuccess({}));
+                dispatch(fetchAlbumsSuccess([]));
             }
         } catch (error) {
             dispatch(fetchAlbumsFailure(error.message));

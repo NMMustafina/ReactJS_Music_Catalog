@@ -1,6 +1,7 @@
 const express = require('express');
 const Track = require("../models/Track");
 const Album = require("../models/Album");
+const Artist = require("../models/Artist");
 
 const router = express.Router();
 
@@ -10,14 +11,18 @@ router.get('/', async (req, res) => {
     try {
         if (req.query.album) {
             query.album = req.query.album;
-            tracks = await Track
+            const tracksData = await Track
                 .find(query)
                 .sort({"number": 1})
-                .populate({
-                    path: 'album',
-                    select: 'title',
-                    populate: {path: 'artist', select: 'name'}
-                })
+
+            const album = await Album.findOne({_id: req.query.album}, "title artist");
+            const artist = await Artist.findOne({_id: album.artist}, "name");
+
+            tracks = {
+                artist: artist.name,
+                album: album.title,
+                tracks: tracksData
+            };
 
         } else if (req.query.artist) {
             const albums = await Album.find({artist: req.query.artist}, "_id title");
@@ -48,6 +53,11 @@ router.post('/', async (req, res) => {
     };
 
     try {
+        const uniqueNumber = await Track.find({album, number});
+        if (uniqueNumber.length > 0) {
+            return res.status(409).send({error: 'Track number already exist!'});
+        }
+
         const track = new Track(trackData);
         await track.save();
 

@@ -5,6 +5,8 @@ import {
 } from "../actions/tracksActions";
 
 const initialState = {
+    artist: "",
+    album: "",
     tracks: [],
     loading: false,
     error: null,
@@ -15,7 +17,14 @@ const tracksReducer = (state = initialState, action) => {
         case FETCH_TRACKS_REQUEST:
             return {...state, loading: true, error: null};
         case FETCH_TRACKS_SUCCESS:
-            return {...state, loading: false, error: null, tracks: action.payload};
+            return {
+                ...state,
+                artist: action.payload.artist,
+                album: action.payload.album,
+                tracks: action.payload.tracks,
+                loading: false,
+                error: null
+            };
         case FETCH_TRACKS_FAILURE:
             return {...state, loading: false, error: action.payload};
         default:
