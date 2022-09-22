@@ -4,7 +4,7 @@ import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from "@m
 import imageNotAvailable from '../../assets/image-not-available.png';
 import {apiUrl} from "../../config";
 
-const ArtistItem = ({id, title, year, image}) => {
+const ArtistItem = ({id, title, year, image, trackQty}) => {
     let cardImage = imageNotAvailable;
 
     if (image) {
@@ -28,6 +28,9 @@ const ArtistItem = ({id, title, year, image}) => {
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                                 <b>Release Date:</b> {year}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                <b>Tracks Quantity:</b> {trackQty}
                             </Typography>
                         </CardContent>
                     </CardActionArea>

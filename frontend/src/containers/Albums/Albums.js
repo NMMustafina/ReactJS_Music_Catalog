@@ -37,6 +37,7 @@ const Album = () => {
                                 title={album.title}
                                 year={album.year}
                                 image={album.image}
+                                trackQty={album.trackQty}
                             />
                         ))}
                     </Grid>

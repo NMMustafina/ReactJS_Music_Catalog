@@ -5,6 +5,7 @@ const {nanoid} = require('nanoid');
 const config = require('../config');
 const Album = require("../models/Album");
 const Artist = require("../models/Artist");
+const Track = require("../models/Track");
 
 const router = express.Router();
 
@@ -33,12 +34,26 @@ router.get('/', async (req, res) => {
 
         const artist = await Artist.findOne({_id: req.query.artist}, "name");
 
-        const albums = {
+        const albums =[]
+
+        for (let a of albumsData) {
+            const tracks = await Track.find({album: a._id});
+            albums.push({
+                _id: a._id,
+                title: a.title,
+                artist: a.artist,
+                year: a.year,
+                image: a.image,
+                trackQty: tracks.length
+            })
+        }
+
+        const artistAlbums = {
             artist: artist.name,
-            albums: albumsData
+            albums: albums
         };
 
-        res.send(albums);
+        res.send(artistAlbums);
     } catch {
         res.sendStatus(500);
     }
