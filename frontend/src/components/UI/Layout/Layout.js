@@ -1,15 +1,17 @@
 import React from 'react';
-import {Outlet} from 'react-router-dom';
-import {Container} from "@mui/material";
-import Header from "../Header/Header";
+import {Container, CssBaseline} from "@mui/material";
+import AppToolbar from "../AppToolbar/AppToolbar";
 
-const Layout = () => {
+const Layout = ({children}) => {
     return (
         <>
-            <Header/>
-            <Container sx={{my: 8}}>
-                <Outlet/>
-            </Container>
+            <CssBaseline/>
+            <AppToolbar/>
+            <main>
+                <Container sx={{my: 8}}>
+                    {children}
+                </Container>
+            </main>
         </>
     );
 };

@@ -6,18 +6,18 @@ import {
 
 const initialState = {
     artists: [],
-    loading: false,
-    error: null,
+    fetchLoading: false,
+    fetchError: null,
 };
 
 const artistsReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_ARTISTS_REQUEST:
-            return {...state, loading: true, error: null};
+            return {...state, fetchLoading: true, fetchError: null};
         case FETCH_ARTISTS_SUCCESS:
-            return {...state, loading: false, error: null, artists: action.payload};
+            return {...state, fetchLoading: false, artists: action.payload};
         case FETCH_ARTISTS_FAILURE:
-            return {...state, loading: false, error: action.payload};
+            return {...state, fetchLoading: false, fetchError: action.payload};
         default:
             return state;
     }

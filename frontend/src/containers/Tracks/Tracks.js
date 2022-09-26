@@ -1,24 +1,21 @@
 import React, {useEffect} from 'react';
-import {useParams, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Typography} from "@mui/material";
 import {fetchTracks} from "../../store/actions/tracksActions";
 import Error from "../../components/UI/Error/Error";
 import Loader from "../../components/UI/Loader/Loader";
 
-const Track = () => {
-    const {id} = useParams();
+const Tracks = ({match, history}) => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const loading = useSelector(state => state.tracks.fetchLoading);
+    const error = useSelector(state => state.tracks.fetchError);
     const tracks = useSelector(state => state.tracks.tracks);
     const artist = useSelector(state => state.tracks.artist);
     const album = useSelector(state => state.tracks.album);
-    const loading = useSelector(state => state.tracks.loading);
-    const error = useSelector(state => state.tracks.error);
 
     useEffect(() => {
-        dispatch(fetchTracks(id));
-    }, [dispatch, id]);
+        dispatch(fetchTracks(match.params.id));
+    }, [dispatch, match.params.id]);
 
     return (
         <>
@@ -37,11 +34,11 @@ const Track = () => {
                             {track.number}. <b>{track.title}</b> <i>{track.length}</i>
                         </Typography>
                     ))}
-                    <Button onClick={() => navigate(-1)} variant="outlined" sx={{mt: 5}}>Go back</Button>
+                    <Button onClick={history.goBack} variant="outlined" sx={{mt: 5}}>Go back</Button>
                 </>
             }
         </>
     );
 };
 
-export default Track;
+export default Tracks;

@@ -7,10 +7,10 @@ import Error from "../../components/UI/Error/Error";
 import Loader from "../../components/UI/Loader/Loader";
 
 const Artists = () => {
-    const artists = useSelector(state => state.artists.artists);
-    const error = useSelector(state => state.artists.error);
-    const loading = useSelector(state => state.artists.loading);
     const dispatch = useDispatch();
+    const loading = useSelector(state => state.artists.fetchLoading);
+    const error = useSelector(state => state.artists.fetchError);
+    const artists = useSelector(state => state.artists.artists);
 
     useEffect(() => {
         dispatch(fetchArtists());

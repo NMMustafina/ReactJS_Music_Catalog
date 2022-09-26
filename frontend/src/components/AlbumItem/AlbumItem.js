@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from "@mui/material";
-import imageNotAvailable from '../../assets/image-not-available.png';
+import imageNotAvailable from '../../assets/image-not-available.jpg';
 import {apiUrl} from "../../config";
 
 const ArtistItem = ({id, title, year, image, trackQty}) => {

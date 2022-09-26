@@ -12,6 +12,14 @@ const theme = createTheme({
             textTransform: 'capitalize'
         }
     },
+    components: {
+        MuiTextField: {
+            defaultProps: {
+                variant: 'outlined',
+                fullWidth: true,
+            }
+        }
+    },
 });
 
 export default theme;

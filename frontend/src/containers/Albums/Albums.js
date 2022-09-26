@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {useParams, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Grid, Typography} from "@mui/material";
 import {fetchAlbums} from "../../store/actions/albumsActions";
@@ -7,18 +6,16 @@ import AlbumItem from "../../components/AlbumItem/AlbumItem";
 import Error from "../../components/UI/Error/Error";
 import Loader from "../../components/UI/Loader/Loader";
 
-const Album = () => {
-    const {id} = useParams();
+const Albums = ({match, history}) => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const loading = useSelector(state => state.albums.fetchLoading);
+    const error = useSelector(state => state.albums.fetchError);
     const albums = useSelector(state => state.albums.albums);
     const artist = useSelector(state => state.albums.artist);
-    const loading = useSelector(state => state.albums.loading);
-    const error = useSelector(state => state.albums.error);
 
     useEffect(() => {
-        dispatch(fetchAlbums(id));
-    }, [dispatch, id]);
+        dispatch(fetchAlbums(match.params.id));
+    }, [dispatch, match.params.id]);
 
     return (
         <>
@@ -41,11 +38,11 @@ const Album = () => {
                             />
                         ))}
                     </Grid>
-                    <Button onClick={() => navigate(-1)} variant="outlined" sx={{mt: 5}}>Go back</Button>
+                    <Button onClick={history.goBack} variant="outlined" sx={{mt: 5}}>Go back</Button>
                 </>
             }
         </>
     );
 };
 
-export default Album;
+export default Albums;
