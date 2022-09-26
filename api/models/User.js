@@ -4,22 +4,30 @@ const {nanoid} = require('nanoid');
 
 const Schema = mongoose.Schema;
 const SALT_WORK_FACTOR = 10;
+
 const UserSchema = new Schema({
     username: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
+        validate: {
+            validator: async value => {
+                const user = await User.findOne({username: value});
+
+                if (user) return false;
+            },
+            message: 'This user is already registered',
+        }
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     token: {
         type: String,
-        require: true,
+        required: true,
     }
 });
-
 
 UserSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();

@@ -1,23 +1,38 @@
 const express = require('express');
-const User = require('../models/User');
 const Track = require("../models/Track");
-const Track_history = require("../models/TrackHistory");
+const TrackHistory = require("../models/TrackHistory");
+const auth = require("../middleware/auth");
+const Album = require("../models/Album");
+const Artist = require("../models/Artist");
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-    const token = req.get('Authorization');
+router.get('/', auth, async (req, res) => {
+    try {
+        const tracksData = await TrackHistory
+            .find({user: req.user._id})
+            .sort({"datetime": -1})
 
-    if (!token) {
-        return res.status(401).send({error: 'No token present!'});
+        const trackHistory = []
+        for (let item of tracksData) {
+            const data = {}
+            const track = await Track.findOne({_id: item.track});
+            const album = await Album.findOne({_id: track.album});
+            const artist = await Artist.findOne({_id: album.artist});
+            data.track = track.title;
+            data.artist = artist.name;
+            data.datetime = item.datetime;
+            data._id = item._id;
+            trackHistory.push(data);
+        }
+
+        res.send(trackHistory);
+    } catch {
+        res.sendStatus(500);
     }
+});
 
-    const user = await User.findOne({token});
-
-    if (!user) {
-        return res.status(401).send({error: 'Wrong token!'});
-    }
-
+router.post('/', auth, async (req, res) => {
     const {track} = req.body;
 
     if (!track) {
@@ -28,17 +43,17 @@ router.post('/', async (req, res) => {
         .findById(track);
 
     if (!hasTrack) {
-        res.status(404).send({message: 'Track not found!'});
+        return res.status(404).send({message: 'Track not found!'});
     }
 
     const trackHistoryData = {
-        user: user._id,
+        user: req.user._id,
         track,
         datetime: new Date()
     };
 
     try {
-        const trackHistory = new Track_history(trackHistoryData);
+        const trackHistory = new TrackHistory(trackHistoryData);
         await trackHistory.save();
 
         res.send(trackHistory);
