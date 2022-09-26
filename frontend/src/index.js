@@ -1,14 +1,17 @@
 import React from 'react';
+import {Router} from "react-router-dom";
 import ReactDOM from 'react-dom/client';
-import {createStore, applyMiddleware, compose, combineReducers} from "redux";
-import {Provider} from "react-redux";
+import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import thunk from "redux-thunk";
-import {BrowserRouter} from "react-router-dom";
+import {Provider} from "react-redux";
 import {ThemeProvider} from "@mui/material";
 import artistsReducer from "./store/reducers/artistsReducer";
 import albumsReducer from "./store/reducers/albumsReducer";
 import tracksReducer from "./store/reducers/tracksReducer";
-import App from "./App";
+import trackHistoryReducer from "./store/reducers/trackHistoryReducer";
+import usersReducer from "./store/reducers/usersReducer";
+import App from './App';
+import history from "./history";
 import theme from "./theme";
 import './index.css';
 
@@ -18,6 +21,8 @@ const rootReducer = combineReducers({
     artists: artistsReducer,
     albums: albumsReducer,
     tracks: tracksReducer,
+    trackHistory: trackHistoryReducer,
+    users: usersReducer,
 });
 
 const store = createStore(
@@ -28,9 +33,9 @@ const store = createStore(
 const app = (
     <Provider store={store}>
         <ThemeProvider theme={theme}>
-            <BrowserRouter>
+            <Router history={history}>
                 <App/>
-            </BrowserRouter>
+            </Router>
         </ThemeProvider>
     </Provider>
 );
