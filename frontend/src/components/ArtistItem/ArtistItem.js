@@ -8,7 +8,7 @@ const ArtistItem = ({id, name, info, image}) => {
     let cardImage = imageNotAvailable;
 
     if (image) {
-        cardImage = apiUrl + '/uploads/' + image;
+        cardImage = apiUrl + '/' + image;
     }
 
     return (
