@@ -8,8 +8,8 @@ import Loader from "../../components/UI/Loader/Loader";
 
 const Albums = ({match, history}) => {
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.albums.fetchLoading);
-    const error = useSelector(state => state.albums.fetchError);
+    const loading = useSelector(state => state.albums.loading);
+    const error = useSelector(state => state.albums.error);
     const albums = useSelector(state => state.albums.albums);
     const artist = useSelector(state => state.albums.artist);
 
