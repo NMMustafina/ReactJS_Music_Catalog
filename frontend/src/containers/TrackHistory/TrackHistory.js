@@ -8,8 +8,8 @@ import Loader from "../../components/UI/Loader/Loader";
 
 const TrackHistory = ({history}) => {
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.trackHistory.fetchLoading);
-    const error = useSelector(state => state.trackHistory.fetchError);
+    const loading = useSelector(state => state.trackHistory.loading);
+    const error = useSelector(state => state.trackHistory.error);
     const trackHistory = useSelector(state => state.trackHistory.trackHistory);
     const user = useSelector(state => state.users.user);
 

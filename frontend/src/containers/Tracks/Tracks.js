@@ -19,8 +19,8 @@ const useStyles = makeStyles()(() => ({
 const Tracks = ({match, history}) => {
     const {classes} = useStyles();
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.tracks.fetchLoading);
-    const error = useSelector(state => state.tracks.fetchError);
+    const loading = useSelector(state => state.tracks.loading);
+    const error = useSelector(state => state.tracks.error);
     const tracks = useSelector(state => state.tracks.tracks);
     const artist = useSelector(state => state.tracks.artist);
     const album = useSelector(state => state.tracks.album);

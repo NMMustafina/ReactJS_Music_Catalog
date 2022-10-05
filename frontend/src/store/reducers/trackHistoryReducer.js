@@ -8,23 +8,23 @@ import {
 
 const initialState = {
     trackHistory: [],
-    fetchLoading: false,
-    fetchError: null,
+    loading: false,
+    error: null,
 };
 
 const trackHistoryReducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_TRACK_HISTORY_REQUEST:
-            return {...state, fetchLoading: true, fetchError: null};
+            return {...state, loading: true, error: null};
         case FETCH_TRACK_HISTORY_SUCCESS:
-            return {...state, fetchLoading: false, trackHistory: action.payload};
+            return {...state, loading: false, trackHistory: action.payload};
         case FETCH_TRACK_HISTORY_FAILURE:
-            return {...state, fetchLoading: false, fetchError: action.payload};
+            return {...state, loading: false, error: action.payload};
 
         case CREATE_TRACK_HISTORY_REQUEST:
-            return {...state, fetchLoading: true};
+            return {...state, loading: true};
         case CREATE_TRACK_HISTORY_SUCCESS:
-            return {...state, fetchLoading: false};
+            return {...state, loading: false};
         default:
             return state;
     }
