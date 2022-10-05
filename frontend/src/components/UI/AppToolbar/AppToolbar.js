@@ -8,6 +8,7 @@ import {AppBar, Button, Container, Grid, Toolbar, Typography} from "@mui/materia
 import {Headphones} from "@mui/icons-material";
 import Anonymous from "./Menu/Anonymous";
 import UserMenu from "./Menu/UserMenu";
+import AddMenu from "./Menu/AddMenu";
 
 const useStyles = makeStyles()(() => ({
     logo: {
@@ -51,6 +52,11 @@ const AppToolbar = () => {
                                 <Button color="inherit" component={Link} to="/track_history">
                                     Track history
                                 </Button>}
+                        </Grid>
+
+                        <Grid item>
+                            {user &&
+                                <AddMenu/>}
                         </Grid>
 
                         <Grid item>

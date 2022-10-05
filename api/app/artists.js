@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const {nanoid} = require('nanoid');
+const auth = require("../middleware/auth");
+const permit = require("../middleware/permit");
 
 const config = require('../config');
 const Artist = require("../models/Artist");
@@ -19,39 +21,80 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-router.get('/', async (req, res) => {
+router.get('/', auth, permit('admin', 'user'), async (req, res) => {
     try {
-        const artists = await Artist.find();
+        let artists;
+
+        if (req.user.role === 'admin') {
+            artists = await Artist.find();
+        }
+
+        if (req.user.role === 'user') {
+            artists = await Artist.find({$or: [{isPublished: true}, {user: req.user._id}]});
+        }
+
         res.send(artists);
     } catch {
         res.sendStatus(500);
     }
 });
 
-router.post('/', upload.single('image'), async (req, res) => {
-    const {name, info} = req.body;
-
-    if (!name) {
-        res.status(400).send({error: 'Name is Required!'});
-    }
-
-    const artistData = {
-        name,
-        info: info || null,
-        image: null,
-    };
-
-    if (req.file) {
-        artistData.image = 'uploads/' + req.file.filename;
-    }
-
+router.post('/:id/publish', auth, permit('admin'), async (req, res) => {
     try {
+        const artist = await Artist.findById(req.params.id);
+
+        if (!artist) {
+            return res.status(404).send({message: 'Artist not found!'});
+        }
+
+        artist.isPublished = true;
+        await artist.save();
+
+        res.send(artist);
+
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
+router.post('/', auth, permit('admin', 'user'), upload.single('image'), async (req, res) => {
+    try {
+        const {name, info} = req.body;
+
+        const artistData = {
+            name,
+            info: info || null,
+            image: null,
+            user: req.user._id
+        };
+
+        if (req.file) {
+            artistData.image = 'uploads/' + req.file.filename;
+        }
+
         const artist = new Artist(artistData);
         await artist.save();
 
         res.send(artist);
+
     } catch (e) {
-        res.status(400).send({error: e.errors});
+        res.status(400).send(e);
+    }
+});
+
+router.delete('/:id', auth, permit('admin'), async (req, res) => {
+    try {
+        const artist = await Artist.findById(req.params.id);
+
+        if (!artist) {
+            return res.status(404).send({message: 'Artist not found!'});
+        }
+
+        await Artist.deleteOne(artist);
+
+        return res.status(200).send({message: 'Success'});
+    } catch {
+        res.sendStatus(500);
     }
 });
 

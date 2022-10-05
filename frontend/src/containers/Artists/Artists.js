@@ -8,8 +8,8 @@ import Loader from "../../components/UI/Loader/Loader";
 
 const Artists = () => {
     const dispatch = useDispatch();
-    const loading = useSelector(state => state.artists.fetchLoading);
-    const error = useSelector(state => state.artists.fetchError);
+    const loading = useSelector(state => state.artists.loading);
+    const error = useSelector(state => state.artists.error);
     const artists = useSelector(state => state.artists.artists);
 
     useEffect(() => {
@@ -33,6 +33,7 @@ const Artists = () => {
                                 name={artist.name}
                                 info={artist.info}
                                 image={artist.image}
+                                isPublished={artist.isPublished}
                             />
                         ))}
                     </Grid>
