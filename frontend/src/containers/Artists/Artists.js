@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Grid, Typography} from "@mui/material";
+import {Box, Grid, LinearProgress, Typography} from "@mui/material";
 import {fetchArtists} from "../../store/actions/artistsActions";
 import ArtistItem from "../../components/ArtistItem/ArtistItem";
 import Error from "../../components/UI/Error/Error";
-import Loader from "../../components/UI/Loader/Loader";
 
 const Artists = () => {
     const dispatch = useDispatch();
@@ -19,7 +18,7 @@ const Artists = () => {
     return (
         <>
             {error ? <Error error={error}/> : null}
-            {loading ? <Loader/> : null}
+            {loading ? <Box sx={{width: '100%'}}><LinearProgress/></Box> : null}
             {artists &&
                 <>
                     <Typography component="h2" variant="h2" align="center" sx={{mb: 5}}>

@@ -8,6 +8,7 @@ import TrackForm from "../../components/TrackForm/TrackForm";
 const NewTrack = () => {
     const dispatch = useDispatch();
     const artists = useSelector(state => state.artists.artists);
+    const albums = useSelector(state => state.albums.albums);
     const error = useSelector(state => state.tracks.createTrackError);
 
     useEffect(() => {
@@ -33,6 +34,7 @@ const NewTrack = () => {
             </Typography>
             <TrackForm
                 artists={artists}
+                albums={albums}
                 error={error}
                 onSubmit={onTrackFormSubmit}
             />

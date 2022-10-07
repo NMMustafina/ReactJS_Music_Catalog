@@ -10,11 +10,11 @@ const AlbumSchema = new Schema({
     artist: {
         type: Schema.Types.ObjectId,
         ref: 'Artist',
-        required: true,
+        required: true
     },
     year: {
         type: Number,
-        required: true,
+        required: true
     },
     image: String,
     isPublished: {
@@ -25,7 +25,7 @@ const AlbumSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+        required: true
     }
 });
 

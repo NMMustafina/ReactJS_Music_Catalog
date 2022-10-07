@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Typography} from "@mui/material";
+import {Box, Button, LinearProgress, Typography} from "@mui/material";
 import {fetchTracks} from "../../store/actions/tracksActions";
 import Error from "../../components/UI/Error/Error";
-import Loader from "../../components/UI/Loader/Loader";
 import TrackItem from "../../components/TrackItem/TrackItem";
 
 const Tracks = ({match, history}) => {
@@ -21,7 +20,7 @@ const Tracks = ({match, history}) => {
     return (
         <>
             {error ? <Error error={error}/> : null}
-            {loading ? <Loader/> : null}
+            {loading ? <Box sx={{width: '100%'}}><LinearProgress/></Box> : null}
             {tracks &&
                 <>
                     <Typography variant="h3" sx={{mb: 5}}>

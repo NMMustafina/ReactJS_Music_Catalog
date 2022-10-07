@@ -1,5 +1,7 @@
 import axiosApi from "../../axiosApi";
 import {historyPush} from "./historyActions";
+import history from "../../history";
+import {toast} from "react-toastify";
 
 export const FETCH_ARTISTS_REQUEST = 'FETCH_ARTISTS_REQUEST';
 export const FETCH_ARTISTS_SUCCESS = 'FETCH_ARTISTS_SUCCESS';
@@ -61,6 +63,15 @@ export const createArtist = (artistData) => {
             await axiosApi.post('/artists', artistData);
             dispatch(createArtistSuccess());
             dispatch(historyPush('/'));
+            toast.success('Artist added successfully!', {
+                position: "top-right",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         } catch (e) {
             if (e.response && e.response.data) {
                 dispatch(createArtistFailure(e.response.data));
@@ -78,7 +89,7 @@ export const publishArtist = id => {
             dispatch(publishArtistRequest());
             await axiosApi.post(`/artists/${id}/publish`);
             dispatch(publishArtistSuccess());
-            dispatch(historyPush('/'));
+            history.go(0);
         } catch (error) {
             dispatch(publishArtistFailure(error.message));
             throw error;
@@ -92,7 +103,7 @@ export const deleteArtist = id => {
             dispatch(deleteArtistRequest());
             await axiosApi.delete(`/artists/${id}`);
             dispatch(deleteArtistSuccess());
-            dispatch(historyPush('/'));
+            history.go(0);
         } catch (error) {
             dispatch(deleteArtistFailure(error.message));
             throw error;

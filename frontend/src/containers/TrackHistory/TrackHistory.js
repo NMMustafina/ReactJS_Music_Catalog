@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
 import {Redirect} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Paper, Typography} from "@mui/material";
+import {Box, Button, LinearProgress, Paper, Typography} from "@mui/material";
 import {fetchTrackHistory} from "../../store/actions/trackHistoryActions";
 import Error from "../../components/UI/Error/Error";
-import Loader from "../../components/UI/Loader/Loader";
 
 const TrackHistory = ({history}) => {
     const dispatch = useDispatch();
@@ -33,12 +32,13 @@ const TrackHistory = ({history}) => {
     return (
         <>
             {error ? <Error error={error}/> : null}
-            {loading ? <Loader/> : null}
-            {trackHistory &&
+            {loading ? <Box sx={{width: '100%'}}><LinearProgress/></Box> : null}
+            {trackHistory.length ?
                 <>
                     <Typography variant="h3" sx={{mb: 5}}>
                         Track History
                     </Typography>
+
                     {trackHistory.map(track => (
                         <Paper key={track._id} elevation={2} sx={{mb: 3, p: 2}}>
                             <Typography variant="body1" gutterBottom>
@@ -54,6 +54,10 @@ const TrackHistory = ({history}) => {
                     ))}
                     <Button onClick={history.goBack} variant="outlined" sx={{mt: 5}}>Go back</Button>
                 </>
+                :
+                <Typography variant="h5" sx={{mb: 5}}>
+                    Track History is empty
+                </Typography>
             }
         </>
     );

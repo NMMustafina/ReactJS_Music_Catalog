@@ -6,6 +6,7 @@ const TrackSchema = new Schema({
     number: {
         type: Number,
         required: true,
+        min: 1
     },
     title: {
         type: String,

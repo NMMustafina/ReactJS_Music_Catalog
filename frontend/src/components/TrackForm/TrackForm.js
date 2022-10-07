@@ -3,11 +3,10 @@ import {Button, Grid} from "@mui/material";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import {fetchAlbums} from "../../store/actions/albumsActions";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
-const TrackForm = ({onSubmit, artists, error}) => {
+const TrackForm = ({onSubmit, artists, albums, error}) => {
     const dispatch = useDispatch();
-    const albums = useSelector(state => state.albums.albums);
 
     const [state, setState] = useState({
         number: "",

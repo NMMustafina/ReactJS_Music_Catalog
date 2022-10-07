@@ -1,5 +1,7 @@
 import axiosApi from "../../axiosApi";
 import {historyPush} from "./historyActions";
+import history from "../../history";
+import {toast} from "react-toastify";
 
 export const FETCH_ALBUMS_REQUEST = 'FETCH_ALBUMS_REQUEST';
 export const FETCH_ALBUMS_SUCCESS = 'FETCH_ALBUMS_SUCCESS';
@@ -34,6 +36,7 @@ const publishAlbumFailure = error => ({type: PUBLISH_ALBUM_FAILURE, payload: err
 const deleteAlbumRequest = () => ({type: DELETE_ALBUM_REQUEST});
 const deleteAlbumSuccess = () => ({type: DELETE_ALBUM_SUCCESS});
 const deleteAlbumFailure = error => ({type: DELETE_ALBUM_FAILURE, payload: error});
+
 export const fetchAlbums = (id) => {
     return async dispatch => {
         try {
@@ -60,6 +63,15 @@ export const createAlbum = (albumData, artist) => {
             await axiosApi.post('/albums', albumData);
             dispatch(createAlbumSuccess());
             dispatch(historyPush('/albums/' + artist));
+            toast.success('Album added successfully!', {
+                position: "top-right",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         } catch (e) {
             if (e.response && e.response.data) {
                 dispatch(createAlbumFailure(e.response.data));
@@ -77,7 +89,7 @@ export const publishAlbum = id => {
             dispatch(publishAlbumRequest());
             await axiosApi.post(`/albums/${id}/publish`);
             dispatch(publishAlbumSuccess());
-            dispatch(historyPush('/'));
+            history.go(0);
         } catch (error) {
             dispatch(publishAlbumFailure(error.message));
             throw error;
@@ -91,7 +103,7 @@ export const deleteAlbum = id => {
             dispatch(deleteAlbumRequest());
             await axiosApi.delete(`/albums/${id}`);
             dispatch(deleteAlbumSuccess());
-            dispatch(historyPush('/'));
+            history.go(0);
         } catch (error) {
             dispatch(deleteAlbumFailure(error.message));
             throw error;

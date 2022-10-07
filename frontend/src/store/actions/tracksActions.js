@@ -1,5 +1,7 @@
 import axiosApi from "../../axiosApi";
 import {historyPush} from "./historyActions";
+import history from "../../history";
+import {toast} from "react-toastify";
 
 export const FETCH_TRACKS_REQUEST = 'FETCH_TRACKS_REQUEST';
 export const FETCH_TRACKS_SUCCESS = 'FETCH_TRACKS_SUCCESS';
@@ -62,6 +64,15 @@ export const createTrack = (trackData) => {
             await axiosApi.post('/tracks', trackData);
             dispatch(createTrackSuccess());
             dispatch(historyPush('/'));
+            toast.success('Track added successfully!', {
+                position: "top-right",
+                autoClose: 3500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         } catch (e) {
             if (e.response && e.response.data) {
                 dispatch(createTrackFailure(e.response.data));
@@ -79,7 +90,7 @@ export const publishTrack = id => {
             dispatch(publishTrackRequest());
             await axiosApi.post(`/tracks/${id}/publish`);
             dispatch(publishTrackSuccess());
-            dispatch(historyPush('/'));
+            history.go(0);
         } catch (error) {
             dispatch(publishTrackFailure(error.message));
             throw error;
@@ -93,7 +104,7 @@ export const deleteTrack = id => {
             dispatch(deleteTrackRequest());
             await axiosApi.delete(`/tracks/${id}`);
             dispatch(deleteTrackSuccess());
-            dispatch(historyPush('/'));
+            history.go(0);
         } catch (error) {
             dispatch(deleteTrackFailure(error.message));
             throw error;
