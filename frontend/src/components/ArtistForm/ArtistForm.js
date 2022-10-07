@@ -5,7 +5,7 @@ import FormElement from "../UI/Form/FormElement/FormElement";
 
 const ArtistForm = ({onSubmit, error}) => {
     const [state, setState] = useState({
-        name: "",
+        title: "",
         info: "",
         image: ""
     });
@@ -60,11 +60,11 @@ const ArtistForm = ({onSubmit, error}) => {
 
                 <FormElement
                     required
-                    label="Name"
+                    label="Title"
                     onChange={inputChangeHandler}
-                    value={state.name}
-                    name="name"
-                    error={getFieldError('name')}
+                    value={state.title}
+                    name="title"
+                    error={getFieldError('title')}
                 />
 
                 <FormElement

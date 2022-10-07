@@ -35,6 +35,7 @@ const Albums = ({match, history}) => {
                                 year={album.year}
                                 image={album.image}
                                 trackQty={album.trackQty}
+                                isPublished={album.isPublished}
                             />
                         ))}
                     </Grid>

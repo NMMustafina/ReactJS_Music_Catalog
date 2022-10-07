@@ -20,7 +20,7 @@ router.get('/', auth, async (req, res) => {
             const album = await Album.findOne({_id: track.album});
             const artist = await Artist.findOne({_id: album.artist});
             data.track = track.title;
-            data.artist = artist.name;
+            data.artist = artist.title;
             data.datetime = item.datetime;
             data._id = item._id;
             trackHistory.push(data);

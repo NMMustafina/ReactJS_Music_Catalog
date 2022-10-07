@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 const ArtistSchema = new Schema({
-    name: {
+    title: {
         type: String,
         required: true,
         unique: true,
@@ -13,7 +13,7 @@ const ArtistSchema = new Schema({
     isPublished: {
         type: Boolean,
         required: true,
-        default: 'false'
+        default: false
     },
     user: {
         type: Schema.Types.ObjectId,

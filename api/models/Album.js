@@ -16,14 +16,16 @@ const AlbumSchema = new Schema({
         type: Number,
         required: true,
     },
-    image: {
-        type: String,
-        required: true,
-    },
+    image: String,
     isPublished: {
         type: Boolean,
         required: true,
-        default: 'false'
+        default: false
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     }
 });
 

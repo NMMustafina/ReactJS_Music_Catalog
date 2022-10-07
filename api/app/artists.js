@@ -59,10 +59,10 @@ router.post('/:id/publish', auth, permit('admin'), async (req, res) => {
 
 router.post('/', auth, permit('admin', 'user'), upload.single('image'), async (req, res) => {
     try {
-        const {name, info} = req.body;
+        const {title, info} = req.body;
 
         const artistData = {
-            name,
+            title,
             info: info || null,
             image: null,
             user: req.user._id

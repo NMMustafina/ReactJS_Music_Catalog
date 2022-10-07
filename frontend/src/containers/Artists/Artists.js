@@ -30,7 +30,7 @@ const Artists = () => {
                             <ArtistItem
                                 key={artist._id}
                                 id={artist._id}
-                                name={artist.name}
+                                title={artist.title}
                                 info={artist.info}
                                 image={artist.image}
                                 isPublished={artist.isPublished}

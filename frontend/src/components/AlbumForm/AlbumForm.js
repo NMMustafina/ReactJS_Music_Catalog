@@ -6,9 +6,9 @@ import FormSelect from "../UI/Form/FormSelect/FormSelect";
 
 const AlbumForm = ({onSubmit, artists, error}) => {
     const [state, setState] = useState({
+        artist: "",
         title: "",
         year: "",
-        artist: "",
         image: "",
     });
 
@@ -20,7 +20,7 @@ const AlbumForm = ({onSubmit, artists, error}) => {
             formData.append(key, state[key]);
         });
 
-        onSubmit(formData);
+        onSubmit(formData, state.artist);
     };
 
     const inputChangeHandler = e => {
@@ -61,7 +61,7 @@ const AlbumForm = ({onSubmit, artists, error}) => {
             >
                 <FormSelect
                     required
-                    label="Artists"
+                    label="Artists *"
                     onChange={inputChangeHandler}
                     value={state.artist}
                     name="artist"
@@ -90,7 +90,6 @@ const AlbumForm = ({onSubmit, artists, error}) => {
 
                 <Grid item>
                     <FileInput
-                        required
                         label="Image"
                         name="image"
                         onChange={fileChangeHandler}

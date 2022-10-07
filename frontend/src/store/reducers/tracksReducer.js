@@ -20,6 +20,8 @@ const initialState = {
     tracks: [],
     loading: false,
     error: null,
+    createTrackError: null,
+    createTrackLoading: false
 };
 
 const tracksReducer = (state = initialState, actions) => {

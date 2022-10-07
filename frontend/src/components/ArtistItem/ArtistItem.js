@@ -10,7 +10,7 @@ import imageNotAvailable from '../../assets/image-not-available.jpg';
 import {apiUrl} from "../../config";
 import {deleteArtist, fetchArtists, publishArtist} from "../../store/actions/artistsActions";
 
-const ArtistItem = ({id, name, info, image, isPublished}) => {
+const ArtistItem = ({id, title, info, image, isPublished}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
 
@@ -39,11 +39,11 @@ const ArtistItem = ({id, name, info, image, isPublished}) => {
                             component="img"
                             height="250"
                             image={cardImage}
-                            alt={name}
+                            alt={title}
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h4" component="h3">
-                                {name}
+                                {title}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                                 {info}

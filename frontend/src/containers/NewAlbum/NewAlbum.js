@@ -5,24 +5,21 @@ import {clearCreateAlbumErrors, createAlbum} from "../../store/actions/albumsAct
 import AlbumForm from "../../components/AlbumForm/AlbumForm";
 import {fetchArtists} from "../../store/actions/artistsActions";
 
-const NewAlbum = ({history}) => {
+const NewAlbum = () => {
     const dispatch = useDispatch();
     const artists = useSelector(state => state.artists.artists);
     const error = useSelector(state => state.albums.createAlbumError);
 
     useEffect(() => {
+        dispatch(fetchArtists());
+
         return () => {
             dispatch(clearCreateAlbumErrors());
         }
     }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(fetchArtists());
-    }, [dispatch]);
-
-    const onAlbumFormSubmit = async albumData => {
-        await dispatch(createAlbum(albumData));
-        history.push("/");
+    const onAlbumFormSubmit = (albumData, artist) => {
+        dispatch(createAlbum(albumData, artist));
     };
 
     return (

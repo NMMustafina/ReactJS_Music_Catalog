@@ -6,6 +6,8 @@ const config = require('../config');
 const Album = require("../models/Album");
 const Artist = require("../models/Artist");
 const Track = require("../models/Track");
+const auth = require("../middleware/auth");
+const permit = require("../middleware/permit");
 
 const router = express.Router();
 
@@ -20,21 +22,26 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-router.get('/', async (req, res) => {
-    const query = {};
-
-    if (req.query.artist) {
-        query.artist = req.query.artist;
-    }
-
+router.get('/', auth, permit('admin', 'user'), async (req, res) => {
     try {
-        let albumsData = await Album
-            .find(query)
-            .sort({"year": 1})
+        if (!req.query.artist) {
+            return res.status(400).send({error: 'Data not valid'});
+        }
 
-        const artist = await Artist.findOne({_id: req.query.artist}, "name");
+        let albumsData = null;
+        if (req.user.role === 'admin') {
+            albumsData = await Album
+                .find({artist: req.query.artist})
+                .sort({"year": 1})
+        } else if (req.user.role === 'user') {
+            albumsData = await Album
+                .find({$or: [{artist: req.query.artist, isPublished: true}, {user: req.user._id}]})
+                .sort({"year": 1})
+        }
 
-        const albums =[]
+        const artist = await Artist.findOne({_id: req.query.artist}, "title");
+
+        const albums = []
 
         for (let a of albumsData) {
             const tracks = await Track.find({album: a._id});
@@ -44,12 +51,13 @@ router.get('/', async (req, res) => {
                 artist: a.artist,
                 year: a.year,
                 image: a.image,
-                trackQty: tracks.length
+                trackQty: tracks.length,
+                isPublished: a.isPublished
             })
         }
 
         const artistAlbums = {
-            artist: artist.name,
+            artist: artist.title,
             albums: albums
         };
 
@@ -59,47 +67,78 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, permit('admin', 'user'), async (req, res) => {
     try {
         const album = await Album
             .findById(req.params.id)
-            .populate('artist', 'name info');
+            .populate('artist', 'title info');
 
         if (!album) {
             res.status(404).send({message: 'Album not found!'});
         }
 
         res.send(album);
-    } catch {
+    } catch (e) {
         res.sendStatus(500);
     }
 });
 
-router.post('/', upload.single('image'), async (req, res) => {
-    const {title, artist, year} = req.body;
+router.post('/:id/publish', auth, permit('admin'), async (req, res) => {
+    try {
+        const album = await Album.findById(req.params.id);
 
-    if (!title || !artist || !year) {
-        return res.status(400).send({error: 'Data not valid'});
+        if (!album) {
+            return res.status(404).send({message: 'Album not found!'});
+        }
+
+        album.isPublished = true;
+        await album.save();
+
+        res.send(album);
+
+    } catch (e) {
+        res.status(400).send(e);
     }
+});
+
+router.post('/', auth, permit('admin', 'user'), upload.single('image'), async (req, res) => {
+    try {
+    const {title, artist, year} = req.body;
 
     const albumData = {
         title,
         artist,
         year,
         image: null,
+        user: req.user._id
     };
 
     if (req.file) {
         albumData.image = 'uploads/' + req.file.filename;
     }
 
-    try {
         const album = new Album(albumData);
         await album.save();
 
         res.send(album);
     } catch (e) {
-        res.status(400).send({error: e.errors});
+        res.status(400).send(e);
+    }
+});
+
+router.delete('/:id', auth, permit('admin'), async (req, res) => {
+    try {
+        const artist = await Album.findById(req.params.id);
+
+        if (!artist) {
+            return res.status(404).send({message: 'Album not found!'});
+        }
+
+        await Album.deleteOne(artist);
+
+        return res.status(200).send({message: 'Success'});
+    } catch {
+        res.sendStatus(500);
     }
 });
 

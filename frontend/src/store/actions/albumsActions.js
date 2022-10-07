@@ -53,13 +53,13 @@ export const fetchAlbums = (id) => {
     };
 };
 
-export const createAlbum = (albumData) => {
+export const createAlbum = (albumData, artist) => {
     return async dispatch => {
         try {
             dispatch(createAlbumRequest());
             await axiosApi.post('/albums', albumData);
             dispatch(createAlbumSuccess());
-            dispatch(historyPush('/'));
+            dispatch(historyPush('/albums/' + artist));
         } catch (e) {
             if (e.response && e.response.data) {
                 dispatch(createAlbumFailure(e.response.data));

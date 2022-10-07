@@ -1,26 +1,36 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Grid} from "@mui/material";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
+import {fetchAlbums} from "../../store/actions/albumsActions";
+import {useDispatch, useSelector} from "react-redux";
 
 const TrackForm = ({onSubmit, artists, error}) => {
+    const dispatch = useDispatch();
+    const albums = useSelector(state => state.albums.albums);
+
     const [state, setState] = useState({
         number: "",
         title: "",
-        artist: "",
         album: "",
         length: "",
+        artist: ""
     });
+
+    useEffect(() => {
+        if (state.artist) {
+            dispatch(fetchAlbums(state.artist));
+        }
+    }, [dispatch, state.artist]);
 
     const submitFormHandler = e => {
         e.preventDefault();
-        const formData = new FormData();
-
-        Object.keys(state).forEach(key => {
-            formData.append(key, state[key]);
-        });
-
-        onSubmit(formData);
+        const trackData = {};
+        trackData.number = state.number;
+        trackData.title = state.title;
+        trackData.album = state.album;
+        trackData.length = state.length;
+        onSubmit(trackData);
     };
 
     const inputChangeHandler = e => {
@@ -52,8 +62,28 @@ const TrackForm = ({onSubmit, artists, error}) => {
                 direction="column"
                 rowSpacing={2}
             >
+                <FormSelect
+                    required
+                    label="Artists *"
+                    onChange={inputChangeHandler}
+                    value={state.artist}
+                    name="artist"
+                    options={artists}
+                    error={getFieldError('artist')}
+                />
+
+                <FormSelect
+                    required
+                    label="Album *"
+                    onChange={inputChangeHandler}
+                    value={state.album}
+                    name="album"
+                    options={albums}
+                    error={getFieldError('album')}
+                />
+
                 <FormElement
-                    // required
+                    required
                     type="number"
                     label="Number"
                     onChange={inputChangeHandler}
@@ -63,7 +93,7 @@ const TrackForm = ({onSubmit, artists, error}) => {
                 />
 
                 <FormElement
-                    // required
+                    required
                     label="Title"
                     onChange={inputChangeHandler}
                     value={state.title}
@@ -71,25 +101,14 @@ const TrackForm = ({onSubmit, artists, error}) => {
                     error={getFieldError('title')}
                 />
 
-                <FormSelect
-                    // required
-                    label="Artists"
+                <FormElement
+                    required
+                    label="Length"
                     onChange={inputChangeHandler}
-                    value={state.artist}
-                    name="artist"
-                    options={artists}
-                    error={getFieldError('artist')}
+                    value={state.length}
+                    name="length"
+                    error={getFieldError('length')}
                 />
-
-                {/*<FormSelect*/}
-                {/*    // required*/}
-                {/*    label="Album"*/}
-                {/*    onChange={inputChangeHandler}*/}
-                {/*    value={state.album}*/}
-                {/*    name="artist"*/}
-                {/*    options={albums}*/}
-                {/*    error={getFieldError('album')}*/}
-                {/*/>*/}
 
                 <Grid item>
                     <Button type="submit" color="primary" variant="contained">Create</Button>

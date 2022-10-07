@@ -23,8 +23,13 @@ const TrackSchema = new Schema({
     isPublished: {
         type: Boolean,
         required: true,
-        default: 'false'
-    }
+        default: false
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
 });
 
 TrackSchema.plugin(idValidator, {message: 'Bad ID value for {PATH}'});

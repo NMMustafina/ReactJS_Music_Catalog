@@ -4,7 +4,7 @@ import {Typography} from "@mui/material";
 import ArtistForm from "../../components/ArtistForm/ArtistForm";
 import {clearCreateArtistErrors, createArtist} from "../../store/actions/artistsActions";
 
-const NewArtist = ({history}) => {
+const NewArtist = () => {
     const dispatch = useDispatch();
     const error = useSelector(state => state.artists.createArtistError);
 
@@ -14,9 +14,8 @@ const NewArtist = ({history}) => {
         }
     }, [dispatch]);
 
-    const onArtistFormSubmit = async artistData => {
-        await dispatch(createArtist(artistData));
-        history.push("/");
+    const onArtistFormSubmit = artistData => {
+        dispatch(createArtist(artistData));
     };
 
     return (
