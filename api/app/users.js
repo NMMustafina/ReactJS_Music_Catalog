@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
-        const {username, password} = req.body;
-        const userData = {username, password};
+        const {email, password, displayName} = req.body;
+        const userData = {email, password, displayName};
         const user = new User(userData);
 
         user.generateToken();
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 
 router.post('/sessions', async (req, res) => {
     try {
-        const user = await User.findOne({username: req.body.username});
+        const user = await User.findOne({email: req.body.email});
 
         if (!user) {
             return res.status(401).send({message: 'Credentials are wrong!'});
