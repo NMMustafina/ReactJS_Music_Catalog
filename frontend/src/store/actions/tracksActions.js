@@ -1,7 +1,7 @@
 import axiosApi from "../../axiosApi";
 import {historyPush} from "./historyActions";
 import history from "../../history";
-import {toast} from "react-toastify";
+import useToast from "../../hooks/useToast";
 
 export const FETCH_TRACKS_REQUEST = 'FETCH_TRACKS_REQUEST';
 export const FETCH_TRACKS_SUCCESS = 'FETCH_TRACKS_SUCCESS';
@@ -64,15 +64,7 @@ export const createTrack = (trackData) => {
             await axiosApi.post('/tracks', trackData);
             dispatch(createTrackSuccess());
             dispatch(historyPush('/'));
-            toast.success('Track added successfully!', {
-                position: "top-right",
-                autoClose: 3500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            useToast('success','Track added successfully!');
         } catch (e) {
             dispatch(createTrackFailure(e.response.data));
         }

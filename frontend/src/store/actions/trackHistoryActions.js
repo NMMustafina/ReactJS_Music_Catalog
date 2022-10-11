@@ -1,5 +1,5 @@
 import axiosApi from "../../axiosApi";
-import {toast} from "react-toastify";
+import useToast from "../../hooks/useToast";
 
 export const FETCH_TRACK_HISTORY_REQUEST = 'FETCH_TRACK_HISTORY_REQUEST';
 export const FETCH_TRACK_HISTORY_SUCCESS = 'FETCH_TRACK_HISTORY_SUCCESS';
@@ -27,15 +27,7 @@ export const fetchTrackHistory = () => {
             dispatch(fetchTrackHistorySuccess(response.data));
         } catch (e) {
             if (e.response.status === 401) {
-                toast.warn('You need login!', {
-                    position: "top-right",
-                    autoClose: 3500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                useToast('warn', 'You need login!');
             }
 
             dispatch(fetchTrackHistoryFailure(e.message));
@@ -48,15 +40,7 @@ export const createTrackHistory = (TrackHistoryData) => {
         try {
             dispatch(createTrackHistoryRequest());
             await axiosApi.post('/track_history', TrackHistoryData);
-            toast.success('Track added to track history!', {
-                position: "top-right",
-                autoClose: 3500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            useToast('info','Track added to track history!');
             dispatch(createTrackHistorySuccess());
         } catch (e) {
             dispatch(createTrackHistoryFailure(e.message));

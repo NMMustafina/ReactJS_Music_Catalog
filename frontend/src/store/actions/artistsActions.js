@@ -1,7 +1,7 @@
 import axiosApi from "../../axiosApi";
 import {historyPush} from "./historyActions";
 import history from "../../history";
-import {toast} from "react-toastify";
+import useToast from "../../hooks/useToast";
 
 export const FETCH_ARTISTS_REQUEST = 'FETCH_ARTISTS_REQUEST';
 export const FETCH_ARTISTS_SUCCESS = 'FETCH_ARTISTS_SUCCESS';
@@ -63,15 +63,7 @@ export const createArtist = (artistData) => {
             await axiosApi.post('/artists', artistData);
             dispatch(createArtistSuccess());
             dispatch(historyPush('/'));
-            toast.success('Artist added successfully!', {
-                position: "top-right",
-                autoClose: 3500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            useToast('success', 'Artist added successfully!');
         } catch (e) {
             dispatch(createArtistFailure(e.response.data));
         }

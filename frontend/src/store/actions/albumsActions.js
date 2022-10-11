@@ -1,7 +1,7 @@
 import axiosApi from "../../axiosApi";
 import {historyPush} from "./historyActions";
 import history from "../../history";
-import {toast} from "react-toastify";
+import useToast from "../../hooks/useToast";
 
 export const FETCH_ALBUMS_REQUEST = 'FETCH_ALBUMS_REQUEST';
 export const FETCH_ALBUMS_SUCCESS = 'FETCH_ALBUMS_SUCCESS';
@@ -63,15 +63,7 @@ export const createAlbum = (albumData, artist) => {
             await axiosApi.post('/albums', albumData);
             dispatch(createAlbumSuccess());
             dispatch(historyPush('/albums/' + artist));
-            toast.success('Album added successfully!', {
-                position: "top-right",
-                autoClose: 3500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            useToast('success', 'Album added successfully!');
         } catch (e) {
             dispatch(createAlbumFailure(e.response.data));
         }
