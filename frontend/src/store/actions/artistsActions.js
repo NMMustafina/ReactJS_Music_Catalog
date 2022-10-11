@@ -73,12 +73,7 @@ export const createArtist = (artistData) => {
                 progress: undefined,
             });
         } catch (e) {
-            if (e.response && e.response.data) {
-                dispatch(createArtistFailure(e.response.data));
-            } else {
-                dispatch(createArtistFailure({global: 'No internet'}));
-            }
-            throw e;
+            dispatch(createArtistFailure(e.response.data));
         }
     }
 };

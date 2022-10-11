@@ -73,12 +73,7 @@ export const createAlbum = (albumData, artist) => {
                 progress: undefined,
             });
         } catch (e) {
-            if (e.response && e.response.data) {
-                dispatch(createAlbumFailure(e.response.data));
-            } else {
-                dispatch(createAlbumFailure({global: 'No internet'}));
-            }
-            throw e;
+            dispatch(createAlbumFailure(e.response.data));
         }
     }
 };

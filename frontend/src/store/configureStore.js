@@ -6,7 +6,7 @@ import artistsReducer from "./reducers/artistsReducer";
 import albumsReducer from "./reducers/albumsReducer";
 import tracksReducer from "./reducers/tracksReducer";
 import trackHistoryReducer from "./reducers/trackHistoryReducer";
-import usersReducer from "./reducers/usersReducer";
+import usersReducer, {initialState} from "./reducers/usersReducer";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -28,7 +28,10 @@ const store = createStore(
 
 store.subscribe(() => {
     saveToLocalStorage({
-        users: store.getState().users,
+        users: {
+            ...initialState,
+            user: store.getState().users.user,
+        }
     })
 });
 
@@ -38,6 +41,14 @@ axiosApi.interceptors.request.use(config => {
     } catch (e) {}
 
     return config;
+});
+
+axiosApi.interceptors.response.use(res => res, e => {
+    if (!e.response.data) {
+        e.response = {data: {global: 'No internet!'}};
+    }
+
+    throw e;
 });
 
 export default store;

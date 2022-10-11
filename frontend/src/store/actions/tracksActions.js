@@ -74,12 +74,7 @@ export const createTrack = (trackData) => {
                 progress: undefined,
             });
         } catch (e) {
-            if (e.response && e.response.data) {
-                dispatch(createTrackFailure(e.response.data));
-            } else {
-                dispatch(createTrackFailure({global: 'No internet'}));
-            }
-            throw e;
+            dispatch(createTrackFailure(e.response.data));
         }
     }
 };

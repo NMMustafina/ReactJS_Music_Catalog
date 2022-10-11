@@ -33,11 +33,7 @@ export const registerUser = userData => {
             dispatch(registerUserSuccess());
             dispatch(historyPush('/login'));
         } catch (e) {
-            if (e.response && e.response.data) {
-                dispatch(registerUserFailure(e.response.data));
-            } else {
-                dispatch(registerUserFailure({global: 'No internet'}));
-            }
+            dispatch(registerUserFailure(e.response.data));
         }
     };
 };
@@ -52,22 +48,15 @@ export const loginUser = userData => {
             dispatch(loginUserSuccess(response.data.user));
             dispatch(historyPush('/'));
         } catch (e) {
-            if (e.response && e.response.data) {
-                dispatch(loginUserFailure(e.response.data));
-            } else {
-                dispatch(loginUserFailure({global: 'No internet'}));
-            }
+            dispatch(loginUserFailure(e.response.data));
         }
     };
 };
 
 export const logoutUser = () => {
-    return async (dispatch, getState) => {
+    return async dispatch => {
         try {
-            const token = getState().users.user.token;
-            const headers = {'Authorization': token};
-
-            await axiosApi.delete('/users/sessions', {headers});
+            await axiosApi.delete('/users/sessions');
 
             dispatch({type: LOGOUT_USER});
             dispatch(historyPush('/'));

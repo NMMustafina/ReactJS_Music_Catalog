@@ -10,7 +10,7 @@ import {
     REGISTER_USER_SUCCESS
 } from "../actions/usersActions";
 
-const initialState = {
+export const initialState = {
     user: null,
     registerLoading: false,
     registerError: null,

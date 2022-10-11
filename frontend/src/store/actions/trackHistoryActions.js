@@ -18,15 +18,11 @@ const createTrackHistorySuccess = () => ({type: CREATE_TRACK_HISTORY_SUCCESS});
 const createTrackHistoryFailure = error => ({type: CREATE_TRACK_HISTORY_FAILURE, payload: error});
 
 export const fetchTrackHistory = () => {
-    return async (dispatch, getState) => {
+    return async dispatch => {
         try {
-            const headers = {
-                'Authorization': getState().users.user && getState().users.user.token,
-            };
-
             dispatch(fetchTrackHistoryRequest());
 
-            const response = await axiosApi('/track_history', {headers});
+            const response = await axiosApi('/track_history');
 
             dispatch(fetchTrackHistorySuccess(response.data));
         } catch (e) {
@@ -48,14 +44,10 @@ export const fetchTrackHistory = () => {
 };
 
 export const createTrackHistory = (TrackHistoryData) => {
-    return async (dispatch, getState) => {
+    return async dispatch => {
         try {
-            const headers = {
-                'Authorization': getState().users.user && getState().users.user.token,
-            };
-
             dispatch(createTrackHistoryRequest());
-            await axiosApi.post('/track_history', TrackHistoryData, {headers});
+            await axiosApi.post('/track_history', TrackHistoryData);
             toast.success('Track added to track history!', {
                 position: "top-right",
                 autoClose: 3500,
