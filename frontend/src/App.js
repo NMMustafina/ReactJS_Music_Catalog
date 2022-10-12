@@ -24,16 +24,38 @@ const App = () => {
     return (
         <Layout>
             <Switch>
+
                 <ProtectedRoute isAllowed={user}
                     redirectTo="/login"
                     path="/" exact
                     component={Artists}
                 />
-                <Route path="/artist/new" component={NewArtist}/>
+
+                <ProtectedRoute
+                    isAllowed={user}
+                    redirectTo="/login"
+                    path="/artist/new"
+                    component={NewArtist}
+                />
+
                 <Route path="/albums/:id" component={Albums}/>
-                <Route path="/album/new" component={NewAlbum}/>
+
+                <ProtectedRoute
+                    isAllowed={user}
+                    redirectTo="/login"
+                    path="/album/new"
+                    component={NewAlbum}
+                />
+
                 <Route path="/tracks/:id" component={Tracks}/>
-                <Route path="/track/new" component={NewTrack}/>
+
+                <ProtectedRoute
+                    isAllowed={user}
+                    redirectTo="/login"
+                    path="/track/new"
+                    component={NewTrack}
+                />
+
                 <Route path="/track_history" component={TrackHistory}/>
                 <Route path="/register" component={Register}/>
                 <Route path="/login" component={Login}/>

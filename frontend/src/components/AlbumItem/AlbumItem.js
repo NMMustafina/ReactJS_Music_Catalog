@@ -7,9 +7,9 @@ import {
 import imageNotAvailable from '../../assets/image-not-available.jpg';
 import {apiUrl} from "../../config";
 import {AssignmentTurnedIn, Delete} from "@mui/icons-material";
-import {deleteAlbum, publishAlbum} from "../../store/actions/albumsActions";
+import {deleteAlbum, fetchAlbums, publishAlbum} from "../../store/actions/albumsActions";
 
-const AlbumItem = ({id, title, year, image, trackQty, isPublished}) => {
+const AlbumItem = ({id, title, year, image, trackQty, isPublished, query}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
 
@@ -21,10 +21,12 @@ const AlbumItem = ({id, title, year, image, trackQty, isPublished}) => {
 
     const onPublish = async () => {
         await dispatch(publishAlbum(id));
+        await dispatch(fetchAlbums(query));
     };
 
     const onDelete = async () => {
         await dispatch(deleteAlbum(id));
+        await dispatch(fetchAlbums(query));
     };
 
     return (

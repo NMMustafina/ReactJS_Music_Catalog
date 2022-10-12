@@ -1,6 +1,5 @@
 import axiosApi from "../../axiosApi";
 import {historyPush} from "./historyActions";
-import history from "../../history";
 import useToast from "../../hooks/useToast";
 
 export const FETCH_ALBUMS_REQUEST = 'FETCH_ALBUMS_REQUEST';
@@ -76,7 +75,6 @@ export const publishAlbum = id => {
             dispatch(publishAlbumRequest());
             await axiosApi.post(`/albums/${id}/publish`);
             dispatch(publishAlbumSuccess());
-            history.go(0);
         } catch (error) {
             dispatch(publishAlbumFailure(error.message));
             throw error;
@@ -90,7 +88,6 @@ export const deleteAlbum = id => {
             dispatch(deleteAlbumRequest());
             await axiosApi.delete(`/albums/${id}`);
             dispatch(deleteAlbumSuccess());
-            history.go(0);
         } catch (error) {
             dispatch(deleteAlbumFailure(error.message));
             throw error;

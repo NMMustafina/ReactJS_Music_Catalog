@@ -1,6 +1,5 @@
 import axiosApi from "../../axiosApi";
 import {historyPush} from "./historyActions";
-import history from "../../history";
 import useToast from "../../hooks/useToast";
 
 export const FETCH_TRACKS_REQUEST = 'FETCH_TRACKS_REQUEST';
@@ -77,7 +76,6 @@ export const publishTrack = id => {
             dispatch(publishTrackRequest());
             await axiosApi.post(`/tracks/${id}/publish`);
             dispatch(publishTrackSuccess());
-            history.go(0);
         } catch (error) {
             dispatch(publishTrackFailure(error.message));
             throw error;
@@ -91,7 +89,6 @@ export const deleteTrack = id => {
             dispatch(deleteTrackRequest());
             await axiosApi.delete(`/tracks/${id}`);
             dispatch(deleteTrackSuccess());
-            history.go(0);
         } catch (error) {
             dispatch(deleteTrackFailure(error.message));
             throw error;

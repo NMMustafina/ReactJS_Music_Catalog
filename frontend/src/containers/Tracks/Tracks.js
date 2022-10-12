@@ -37,6 +37,7 @@ const Tracks = ({match, history}) => {
                             title={track.title}
                             length={track.length}
                             isPublished={track.isPublished}
+                            query={match.params.id}
                         />
                     ))}
                     <Button onClick={history.goBack} variant="outlined" sx={{mt: 5}}>Go back</Button>

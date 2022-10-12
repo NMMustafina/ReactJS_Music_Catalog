@@ -1,10 +1,10 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Badge, Grid, IconButton, Tooltip, Typography} from "@mui/material";
+import {AssignmentTurnedIn, Delete} from "@mui/icons-material";
 import {makeStyles} from "tss-react/mui";
 import {createTrackHistory} from "../../store/actions/trackHistoryActions";
-import {deleteTrack, publishTrack} from "../../store/actions/tracksActions";
-import {AssignmentTurnedIn, Delete} from "@mui/icons-material";
+import {deleteTrack, fetchTracks, publishTrack} from "../../store/actions/tracksActions";
 
 const useStyles = makeStyles()(() => ({
     customLink: {
@@ -15,7 +15,7 @@ const useStyles = makeStyles()(() => ({
     }
 }));
 
-const TrackItem = ({id, number, title, length, isPublished}) => {
+const TrackItem = ({id, number, title, length, isPublished, query}) => {
     const {classes} = useStyles();
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
@@ -26,10 +26,12 @@ const TrackItem = ({id, number, title, length, isPublished}) => {
 
     const onPublish = async () => {
         await dispatch(publishTrack(id));
+        await dispatch(fetchTracks(query));
     };
 
     const onDelete = async () => {
         await dispatch(deleteTrack(id));
+        await dispatch(fetchTracks(query));
     };
 
     return (
