@@ -37,6 +37,7 @@ const Register = () => {
         email: '',
         password: '',
         displayName: '',
+        avatarImage: ''
     });
 
     useEffect(() => {
@@ -108,6 +109,15 @@ const Register = () => {
                         value={user.password}
                         onChange={inputChangeHandler}
                         error={getFieldError('password')}
+                    />
+
+                    <FormElement
+                        required={true}
+                        label="Avatar"
+                        name="avatarImage"
+                        value={user.avatarImage}
+                        onChange={inputChangeHandler}
+                        error={getFieldError('avatarImage')}
                     />
 
                     <Grid item xs={12}>

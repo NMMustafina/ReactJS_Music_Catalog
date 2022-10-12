@@ -4,12 +4,20 @@ import {useDispatch} from "react-redux";
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import {Avatar} from "@mui/material";
 import {logoutUser} from "../../../../store/actions/usersActions";
+import imageNotAvailable from '../../../../assets/image-not-available.jpg';
 
 const UserMenu = ({user}) => {
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
+    let avatarImage = imageNotAvailable;
+
+    if (user.avatarImage) {
+        avatarImage = user.avatarImage;
+    }
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -28,7 +36,9 @@ const UserMenu = ({user}) => {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
+                sx={{ml: 5}}
             >
+                <Avatar alt={user.displayName} src={avatarImage} sx={{width: 32, height: 32, mr: 1}}/>
                 Hello, {user.displayName}!
             </Button>
             <Menu

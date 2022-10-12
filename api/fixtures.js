@@ -20,7 +20,8 @@ const run = async () => {
         password: 'admin',
         token: nanoid(),
         role: 'admin',
-        displayName: 'Admin'
+        displayName: 'Admin',
+        avatarImage: 'https://i.postimg.cc/BvmNGFrd/admin-avatar.jpg'
     }, {
         email: 'user@gmail.com',
         password: 'user',

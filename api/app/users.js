@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
-        const {email, password, displayName} = req.body;
-        const userData = {email, password, displayName};
+        const {email, password, displayName, avatarImage} = req.body;
+        const userData = {email, password, displayName, avatarImage};
         const user = new User(userData);
 
         user.generateToken();
@@ -46,8 +46,7 @@ router.post('/facebookLogin', async (req, res) => {
     const inputToken = req.body.accessToken;
     const accessToken = config.facebook.appId + '|' + config.facebook.appSecret;
 
-    const debugTokenUrl = `https://graph.facebook.com/debug_token?input_token=${inputToken}&ac
-cess_token=${accessToken}`;
+    const debugTokenUrl = `https://graph.facebook.com/debug_token?input_token=${inputToken}&access_token=${accessToken}`;
 
     try {
         const response = await axios.get(debugTokenUrl);
@@ -68,6 +67,7 @@ cess_token=${accessToken}`;
                 password: nanoid(),
                 facebookId: req.body.id,
                 displayName: req.body.name,
+                avatarImage: req.body.picture.data.url
             });
         }
 
