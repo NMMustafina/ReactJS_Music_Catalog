@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {clearLoginErrors, loginUser} from "../../store/actions/usersActions";
 import FormElement from "../../components/UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
+import FacebookLogin from "../../components/FacebookLogin/FacebookLogin";
 
 const useStyles = makeStyles()(theme => ({
     paper: {
@@ -112,6 +113,11 @@ const Login = () => {
                             Sign In
                         </ButtonWithProgress>
                     </Grid>
+
+                    <Grid item xs={12}>
+                        <FacebookLogin/>
+                    </Grid>
+
                 </Grid>
 
                 <Grid container justifyContent="flex-end">
