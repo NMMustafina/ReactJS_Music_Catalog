@@ -38,7 +38,7 @@ router.get('/', auth, permit('admin', 'user'), async (req, res) => {
 
         if (req.user.role === 'user') {
             tracks.tracks = tracks.tracks.filter(t => {
-                return t.isPublished || t.user === req.user._id
+                return t.isPublished || t.user.equals(req.user._id);
             })
         }
 

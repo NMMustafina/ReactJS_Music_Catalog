@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import {Avatar} from "@mui/material";
 import {logoutUser} from "../../../../store/actions/usersActions";
 import imageNotAvailable from '../../../../assets/image-not-available.jpg';
+import {apiUrl} from "../../../../config";
 
 const UserMenu = ({user}) => {
     const dispatch = useDispatch();
@@ -15,8 +16,10 @@ const UserMenu = ({user}) => {
 
     let avatarImage = imageNotAvailable;
 
-    if (user.avatarImage) {
+    if (user.avatarImage && user.facebookId) {
         avatarImage = user.avatarImage;
+    } else if (user.avatarImage) {
+        avatarImage = apiUrl + '/' + user.avatarImage;
     }
 
     const handleClick = (event) => {

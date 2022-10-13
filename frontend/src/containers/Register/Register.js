@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {clearRegisterErrors, registerUser} from "../../store/actions/usersActions";
 import FormElement from "../../components/UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
+import FileInput from "../../components/UI/Form/FileInput/FileInput";
 
 const useStyles = makeStyles()(theme => ({
     paper: {
@@ -46,16 +47,28 @@ const Register = () => {
         }
     }, [dispatch]);
 
+    const submitFormHandler = e => {
+        e.preventDefault();
+        const formData = new FormData();
+
+        Object.keys(user).forEach(key => {
+            formData.append(key, user[key]);
+        });
+
+        dispatch(registerUser(formData));
+    };
+
     const inputChangeHandler = e => {
         const {name, value} = e.target;
 
         setUser(prev => ({...prev, [name]: value}));
     };
 
-    const submitFormHandler = e => {
-        e.preventDefault();
+    const fileChangeHandler = e => {
+        const name = e.target.name;
+        const file = e.target.files[0];
 
-        dispatch(registerUser({...user}));
+        setUser(prevState => ({...prevState, [name]: file}));
     };
 
     const getFieldError = fieldName => {
@@ -111,14 +124,13 @@ const Register = () => {
                         error={getFieldError('password')}
                     />
 
-                    <FormElement
-                        required={true}
-                        label="Avatar"
-                        name="avatarImage"
-                        value={user.avatarImage}
-                        onChange={inputChangeHandler}
-                        error={getFieldError('avatarImage')}
-                    />
+                    <Grid item>
+                        <FileInput
+                            label="Avatar"
+                            name="avatarImage"
+                            onChange={fileChangeHandler}
+                        />
+                    </Grid>
 
                     <Grid item xs={12}>
                         <ButtonWithProgress

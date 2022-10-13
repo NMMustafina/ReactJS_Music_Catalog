@@ -35,7 +35,7 @@ router.get('/', auth, permit('admin', 'user'), async (req, res) => {
                 .sort({"year": 1})
         } else if (req.user.role === 'user') {
             albumsData = await Album
-                .find({$or: [{artist: req.query.artist, isPublished: true}, {user: req.user._id}]})
+                .find({$and: [{artist: req.query.artist}, {$or: [{isPublished: true}, {user: req.user._id}]}]})
                 .sort({"year": 1})
         }
 
@@ -103,19 +103,19 @@ router.post('/:id/publish', auth, permit('admin'), async (req, res) => {
 
 router.post('/', auth, permit('admin', 'user'), upload.single('image'), async (req, res) => {
     try {
-    const {title, artist, year} = req.body;
+        const {title, artist, year} = req.body;
 
-    const albumData = {
-        title,
-        artist,
-        year,
-        image: null,
-        user: req.user._id
-    };
+        const albumData = {
+            title,
+            artist,
+            year,
+            image: null,
+            user: req.user._id
+        };
 
-    if (req.file) {
-        albumData.image = 'uploads/' + req.file.filename;
-    }
+        if (req.file) {
+            albumData.image = 'uploads/' + req.file.filename;
+        }
 
         const album = new Album(albumData);
         await album.save();

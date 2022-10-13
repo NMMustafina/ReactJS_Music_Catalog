@@ -21,7 +21,7 @@ const run = async () => {
         token: nanoid(),
         role: 'admin',
         displayName: 'Admin',
-        avatarImage: 'https://i.postimg.cc/BvmNGFrd/admin-avatar.jpg'
+        avatarImage: 'fixtures/admin-avatar.jpg'
     }, {
         email: 'user@gmail.com',
         password: 'user',
